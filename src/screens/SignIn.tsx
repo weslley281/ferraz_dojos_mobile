@@ -1,14 +1,34 @@
 import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import LogoSvg from '@assets/logo.svg';
 import BackgroundImg from '@assets/background.png';
 
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
+import { api } from '@services/api';
+import { Alert } from 'react-native';
 
 export function SignIn() {
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
+
+  async function login(email: string, password: string) {
+    try {
+      const response = await api.post('/login', { email, password });
+      const token = response.data.token;
+      await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
+      Alert.alert;
+    } catch (error) {
+      Alert.alert(
+        'Aviso',
+        `Não foi possível fazer o Login, verifique o email e a senha`
+      );
+      console.error(`Não foi possível fazer o Login error ${error}`);
+    }
+  }
 
   function handleNewAccount() {
     navigate('signUp');
@@ -16,14 +36,7 @@ export function SignIn() {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <VStack flex={1} px={10} pb={16}>
-        <Image
-          source={BackgroundImg}
-          defaultSource={BackgroundImg}
-          alt="Pessoas treinando"
-          resizeMode="contain"
-          position="absolute"
-        />
+      <VStack background={'#808080'} flex={1} px={10} pb={16}>
         <Center my={24}>
           <LogoSvg />
           <Text color="gray.100" fontSize="sm">
@@ -32,7 +45,7 @@ export function SignIn() {
         </Center>
         <Center>
           <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
-            Acesse a conta
+            Acesse a sua conta
           </Heading>
 
           <Input
