@@ -2,7 +2,6 @@ import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LogoSvg from '@assets/logo.svg';
-import BackgroundImg from '@assets/background.png';
 
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
