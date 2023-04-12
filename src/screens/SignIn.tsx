@@ -10,20 +10,27 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { api } from '@services/api';
 import { Alert } from 'react-native';
+import { useState } from 'react';
 
 export function SignIn() {
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
 
-  async function login(email: string, password: string) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function login() {
     try {
-      const response = await api.post('/login', { email, password });
+      const response = await api.post('dojos/login', { email, password });
       const token = response.data.token;
-      await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
+      console.log(response.status);
+      Alert.alert('Aviso', `${response.status}`);
+      // await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
+      await AsyncStorage.setItem('@tokenFerraz', JSON.stringify(token));
       Alert.alert;
     } catch (error) {
       Alert.alert(
         'Aviso',
-        `Não foi possível fazer o Login, verifique o email e a senha`
+        `Não foi possível fazer o Login, verifique o email e a senha: ${error}`
       );
       console.error(`Não foi possível fazer o Login error ${error}`);
     }
@@ -51,11 +58,19 @@ export function SignIn() {
             placeholder="E-mail"
             keyboardType="email-address"
             autoCapitalize="none"
+            onChangeText={(text: string) => setEmail(text)}
+            value={email}
           />
 
-          <Input placeholder="Senha" secureTextEntry />
+          <Input
+            placeholder="Senha"
+            secureTextEntry
+            autoCapitalize="none"
+            onChangeText={(text: string) => setPassword(text)}
+            value={password}
+          />
 
-          <Button title="Acessar" />
+          <Button title="Acessar" onPress={login} />
         </Center>
 
         <Center mt={24}>
