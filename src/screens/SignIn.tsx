@@ -26,7 +26,7 @@ export function SignIn() {
       Alert.alert('Aviso', `${response.status}`);
       // await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
       await AsyncStorage.setItem('@tokenFerraz', JSON.stringify(token));
-      Alert.alert;
+      navigate('home');
     } catch (error) {
       Alert.alert(
         'Aviso',
