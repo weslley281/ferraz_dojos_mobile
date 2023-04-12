@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { api } from '@services/api';
 import { Alert } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function SignIn() {
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
@@ -18,15 +18,27 @@ export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  async function checkToken() {
+    const token = await AsyncStorage.getItem('@tokenFerraz');
+    if (token) {
+      navigate('home');
+    }
+  }
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   async function login() {
     try {
       const response = await api.post('dojos/login', { email, password });
       const token = response.data.token;
       console.log(response.status);
-      Alert.alert('Aviso', `${response.status}`);
       // await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
+
+      await AsyncStorage.removeItem('@tokenFerraz');
+
       await AsyncStorage.setItem('@tokenFerraz', JSON.stringify(token));
-      navigate('home');
+      return navigate('home');
     } catch (error) {
       Alert.alert(
         'Aviso',

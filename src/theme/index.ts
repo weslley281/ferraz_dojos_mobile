@@ -18,6 +18,8 @@ export const THEME = extendTheme({
     white: '#FFFFFF',
     red: {
       500: '#F75A68',
+      700: '#FF0000',
+      900: '#800000',
     },
   },
   fonts: {
