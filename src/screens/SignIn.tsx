@@ -20,6 +20,7 @@ export function SignIn() {
 
   async function checkToken() {
     const token = await AsyncStorage.getItem('@tokenFerraz');
+    console.log('Se esta autenticado = ' + token);
     if (token) {
       navigate('home');
     }
@@ -37,7 +38,7 @@ export function SignIn() {
 
       await AsyncStorage.removeItem('@tokenFerraz');
 
-      await AsyncStorage.setItem('@tokenFerraz', JSON.stringify(token));
+      await AsyncStorage.setItem('@tokenFerraz', token);
       return navigate('home');
     } catch (error) {
       Alert.alert(

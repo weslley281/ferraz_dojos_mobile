@@ -11,34 +11,26 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { verify } from 'jsonwebtoken';
 
-interface tokenDojo {
-  token: string;
-  dojo: {
-    id_dojo: string;
-    dojo: string;
-    email: string;
-  };
-}
-
 export function HomeHeader() {
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
 
   const [storageLoading, setStorageLoading] = useState(true);
-  const [dojo, setDojo] = useState<tokenDojo>({} as tokenDojo);
+  const [dojo, setDojo] = useState('');
+  const [idDojo, setIDDojo] = useState('');
 
   useEffect(() => {
     async function loadDojoStorageData() {
       const dojoStoraged = await AsyncStorage.getItem('@tokenFerraz');
 
       if (dojoStoraged) {
-        const dojoLogged = JSON.parse(dojoStoraged) as tokenDojo;
+        const dojoLogged = dojoStoraged;
         setDojo(dojoLogged);
 
-        verify(dojoLogged.dojo, '@tokenFerraz', (err: any, decoded: any) => {
-          console.log(`O ID do usuário é: ${decoded.subject}`);
-          // O ID do usuário pode estar incluído no payload do token
-          return decoded.subject;
-        });
+        // verify(dojoLogged, '@tokenFerraz', (err: any, decoded: any) => {
+        //   console.log(`O ID do usuário é: ${decoded.subject}`);
+        //   // O ID do usuário pode estar incluído no payload do token
+        //   setIDDojo(decoded.subject);
+        // });
       }
       setStorageLoading(false);
     }
