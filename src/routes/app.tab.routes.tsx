@@ -10,7 +10,6 @@ import HistorySvg from '@assets/history.svg';
 import ProfileSvg from '@assets/profile.svg';
 import ClassesSvg from '@assets/classes.svg';
 
-import { Home } from '@screens/Home';
 import { Classes } from '@screens/Classes';
 import { History } from '@screens/History';
 import { Profile } from '@screens/Profile';
