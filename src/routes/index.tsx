@@ -2,7 +2,7 @@ import { useTheme, Box } from 'native-base';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import { AuthRoutes } from './auth.routes';
-import { AppRoutes } from './app.routes';
+import { AppRoutes } from './app.tab.routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 

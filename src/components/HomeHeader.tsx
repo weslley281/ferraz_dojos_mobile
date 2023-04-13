@@ -2,9 +2,6 @@ import { TouchableOpacity } from 'react-native';
 import { Heading, HStack, Text, VStack, Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Loading } from '@components/Loading';
-
-import { UserPhoto } from './UserPhoto';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +9,7 @@ import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { verify } from 'jsonwebtoken';
 import { loadDojoStorageData } from '@utils/dojo';
 import { api } from '@services/api';
+import { AppNavigatorRoutesProps } from '@routes/app.tab.routes';
 
 interface IDojo {
   id_dojo: string;
@@ -29,7 +27,7 @@ interface IDojo {
 }
 
 export function HomeHeader() {
-  const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
+  const authroutes = useNavigation<AuthNavigatorRoutesProps>();
 
   const token = loadDojoStorageData();
   const [data, setData] = useState<IDojo>({
@@ -81,7 +79,7 @@ export function HomeHeader() {
 
   async function logout() {
     await AsyncStorage.removeItem('@tokenFerraz');
-    return navigate('signIn');
+    return authroutes.navigate('signIn');
   }
 
   return (

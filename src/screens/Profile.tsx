@@ -4,7 +4,5 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
 export function Profile() {
-  const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
-
   return <Center flex={1}></Center>;
 }

@@ -16,7 +16,7 @@ import { Alert } from 'react-native';
 import { api } from '@services/api';
 
 export function SignUp() {
-  const { goBack, navigate } = useNavigation<AuthNavigatorRoutesProps>();
+  const authroutes = useNavigation<AuthNavigatorRoutesProps>();
 
   const [dojo, setDojo] = useState('');
   const [selectedState, setSelectedState] = useState(null);
@@ -88,7 +88,7 @@ export function SignUp() {
       const response = await api.post('dojos/create', obj);
       console.log(response.status);
       Alert.alert('Alerta', 'Conta criado com sucesso: ' + response.status);
-      navigate('signIn');
+      authroutes.navigate('signIn');
     } catch (error: any) {
       console.log(error);
       Alert.alert('Erro', error.message);
@@ -177,7 +177,7 @@ export function SignUp() {
           mt={24}
           title="Voltar a Tela de Login"
           variant="outline"
-          onPress={() => goBack()}
+          onPress={() => authroutes.goBack()}
         />
       </VStack>
     </ScrollView>

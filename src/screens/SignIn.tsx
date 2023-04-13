@@ -11,11 +11,12 @@ import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { api } from '@services/api';
 import { Alert } from 'react-native';
 import { useEffect, useState } from 'react';
-import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import { AppNavigatorRoutesProps } from '@routes/app.tab.routes';
+import { HomeNavigatorRoutesProps } from '@routes/home.routes';
 
 export function SignIn() {
   const authroutes = useNavigation<AuthNavigatorRoutesProps>();
-  const approutes = useNavigation<AppNavigatorRoutesProps>();
+  const homeroutes = useNavigation<HomeNavigatorRoutesProps>();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +25,7 @@ export function SignIn() {
     const token = await AsyncStorage.getItem('@tokenFerraz');
     console.log('Se esta autenticado = ' + token);
     if (token) {
-      approutes.navigate('home');
+      homeroutes.navigate('home');
     }
   }
   useEffect(() => {
@@ -44,7 +45,7 @@ export function SignIn() {
 
       await AsyncStorage.setItem('@tokenFerraz', token);
       await AsyncStorage.setItem('@id_dojo', id_dojo);
-      return approutes.navigate('home');
+      return homeroutes.navigate('home');
     } catch (error) {
       Alert.alert(
         'Aviso',
