@@ -11,9 +11,11 @@ import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { api } from '@services/api';
 import { Alert } from 'react-native';
 import { useEffect, useState } from 'react';
+import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
 export function SignIn() {
-  const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
+  const authroutes = useNavigation<AuthNavigatorRoutesProps>();
+  const approutes = useNavigation<AppNavigatorRoutesProps>();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,7 +24,7 @@ export function SignIn() {
     const token = await AsyncStorage.getItem('@tokenFerraz');
     console.log('Se esta autenticado = ' + token);
     if (token) {
-      navigate('home');
+      approutes.navigate('home');
     }
   }
   useEffect(() => {
@@ -33,13 +35,16 @@ export function SignIn() {
     try {
       const response = await api.post('dojos/login', { email, password });
       const token = response.data.token;
-      console.log(response.status);
-      // await AsyncStorage.setItem('@tokenFerraz', token); // armazenar o token no AsyncStorage
+      const id_dojo = response.data.id_dojo;
+      console.log('o token do login foi ' + response.data.token);
+      console.log('o id veio como ' + response.data.id_dojo);
 
       await AsyncStorage.removeItem('@tokenFerraz');
+      await AsyncStorage.removeItem('@id_dojo');
 
       await AsyncStorage.setItem('@tokenFerraz', token);
-      return navigate('home');
+      await AsyncStorage.setItem('@id_dojo', id_dojo);
+      return approutes.navigate('home');
     } catch (error) {
       Alert.alert(
         'Aviso',
@@ -50,7 +55,7 @@ export function SignIn() {
   }
 
   function handleNewAccount() {
-    navigate('signUp');
+    authroutes.navigate('signUp');
   }
 
   return (

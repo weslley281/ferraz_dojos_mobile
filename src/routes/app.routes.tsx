@@ -8,6 +8,7 @@ import {
 import HomeSvg from '@assets/home.svg';
 import HistorySvg from '@assets/history.svg';
 import ProfileSvg from '@assets/profile.svg';
+import ClassesSvg from '@assets/classes.svg';
 
 import { Home } from '@screens/Home';
 import { Classes } from '@screens/Classes';
@@ -32,6 +33,7 @@ export function AppRoutes() {
 
   return (
     <Navigator
+      initialRouteName="home"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -79,7 +81,11 @@ export function AppRoutes() {
       <Screen
         name="classes"
         component={Classes}
-        options={{ tabBarButton: () => null }}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <ClassesSvg fill={color} width={iconSize} height={iconSize} />
+          ),
+        }}
       />
     </Navigator>
   );

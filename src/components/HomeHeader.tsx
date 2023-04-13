@@ -10,33 +10,73 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { verify } from 'jsonwebtoken';
+import { loadDojoStorageData } from '@utils/dojo';
+import { api } from '@services/api';
+
+interface IDojo {
+  id_dojo: string;
+  dojo: string;
+  phone: string;
+  email: string;
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  state: string;
+  country: string;
+  paid_out: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export function HomeHeader() {
   const { navigate } = useNavigation<AuthNavigatorRoutesProps>();
 
-  const [storageLoading, setStorageLoading] = useState(true);
-  const [dojo, setDojo] = useState('');
-  const [idDojo, setIDDojo] = useState('');
+  const token = loadDojoStorageData();
+  const [data, setData] = useState<IDojo>({
+    id_dojo: 'Nada aqui',
+    dojo: 'Nada aqui',
+    phone: 'Nada aqui',
+    email: 'Nada aqui',
+    address_line1: 'Nada aqui',
+    address_line2: 'Nada aqui',
+    city: 'Nada aqui',
+    state: 'Nada aqui',
+    country: 'Nada aqui',
+    paid_out: 'Nada aqui',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  async function getDataById() {
+    const idDojoStoraged = await AsyncStorage.getItem('@id_dojo');
+
+    try {
+      const response = await api.get(`dojos/id/${idDojoStoraged}`);
+
+      const dataDojo = {
+        id_dojo: response.data.id_dojo,
+        dojo: response.data.dojo,
+        phone: response.data.phone,
+        email: response.data.email,
+        address_line1: response.data.address_line1,
+        address_line2: response.data.address_line2,
+        city: response.data.city,
+        state: response.data.state,
+        country: response.data.country,
+        paid_out: response.data.paid_out,
+        createdAt: response.data.createdAt,
+        updatedAt: response.data.updatedAt,
+      };
+
+      setData(dataDojo);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    async function loadDojoStorageData() {
-      const dojoStoraged = await AsyncStorage.getItem('@tokenFerraz');
-
-      if (dojoStoraged) {
-        const dojoLogged = dojoStoraged;
-        setDojo(dojoLogged);
-
-        // verify(dojoLogged, '@tokenFerraz', (err: any, decoded: any) => {
-        //   console.log(`O ID do usuário é: ${decoded.subject}`);
-        //   // O ID do usuário pode estar incluído no payload do token
-        //   setIDDojo(decoded.subject);
-        // });
-      }
-      setStorageLoading(false);
-    }
-
-    console.log('O dojo é: ' + dojo);
-    loadDojoStorageData();
+    getDataById();
+    console.log(data);
   }, []);
 
   async function logout() {
@@ -52,7 +92,7 @@ export function HomeHeader() {
         </Text>
 
         <Heading color="gray.100" fontSize="md" fontFamily="heading">
-          {storageLoading ? '' : 'Quebra Dentes Dentes Dojo de Artes Marciais'}
+          {data.dojo ? data.dojo : ''}
         </Heading>
       </VStack>
 
