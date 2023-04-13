@@ -17,6 +17,7 @@ import { Profile } from '@screens/Profile';
 import { HomeRoutes } from './home.routes';
 
 type AppRoutes = {
+  homeTab: undefined;
   classes: undefined;
   profile: undefined;
   history: undefined;
@@ -33,6 +34,7 @@ export function AppRoutes() {
 
   return (
     <Navigator
+      initialRouteName="homeTab"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -48,7 +50,7 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name="home"
+        name="homeTab"
         component={HomeRoutes}
         options={{
           tabBarIcon: ({ color }) => (
