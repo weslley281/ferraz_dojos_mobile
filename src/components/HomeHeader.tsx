@@ -5,11 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
-import { verify } from 'jsonwebtoken';
 import { loadDojoStorageData } from '@utils/dojo';
 import { api } from '@services/api';
-import { AppNavigatorRoutesProps } from '@routes/app.tab.routes';
 
 interface IDojo {
   id_dojo: string;
@@ -27,7 +24,7 @@ interface IDojo {
 }
 
 export function HomeHeader() {
-  const authroutes = useNavigation<AuthNavigatorRoutesProps>();
+  const { navigate } = useNavigation<any>();
 
   const token = loadDojoStorageData();
   const [data, setData] = useState<IDojo>({
@@ -79,7 +76,7 @@ export function HomeHeader() {
 
   async function logout() {
     await AsyncStorage.removeItem('@tokenFerraz');
-    return authroutes.navigate('signIn');
+    return navigate('signIn');
   }
 
   return (

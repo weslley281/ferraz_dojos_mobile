@@ -9,13 +9,11 @@ import {
 } from 'native-base';
 
 import { useNavigation } from '@react-navigation/native';
-import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import { HomeHeader } from '@components/HomeHeader';
 import { CustomButton } from '@components/ButtonIcon';
-import { AppNavigatorRoutesProps } from '@routes/app.tab.routes';
 
-export function Home() {
-  const approutes = useNavigation<AppNavigatorRoutesProps>();
+export function Dashboard() {
+  const { navigate } = useNavigation<any>();
 
   return (
     <VStack flex={1}>

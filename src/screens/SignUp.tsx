@@ -9,14 +9,12 @@ import BackgroundImg from '@assets/background.png';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
-import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
-
 import { states } from '../utils/states';
 import { Alert } from 'react-native';
 import { api } from '@services/api';
 
 export function SignUp() {
-  const authroutes = useNavigation<AuthNavigatorRoutesProps>();
+  const { navigate, goBack } = useNavigation<any>();
 
   const [dojo, setDojo] = useState('');
   const [selectedState, setSelectedState] = useState(null);
@@ -88,7 +86,7 @@ export function SignUp() {
       const response = await api.post('dojos/create', obj);
       console.log(response.status);
       Alert.alert('Alerta', 'Conta criado com sucesso: ' + response.status);
-      authroutes.navigate('signIn');
+      navigate('signIn');
     } catch (error: any) {
       console.log(error);
       Alert.alert('Erro', error.message);
@@ -177,7 +175,7 @@ export function SignUp() {
           mt={24}
           title="Voltar a Tela de Login"
           variant="outline"
-          onPress={() => authroutes.goBack()}
+          onPress={() => goBack()}
         />
       </VStack>
     </ScrollView>

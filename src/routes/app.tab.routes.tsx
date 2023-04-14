@@ -13,27 +13,19 @@ import ClassesSvg from '@assets/classes.svg';
 import { Classes } from '@screens/Classes';
 import { History } from '@screens/History';
 import { Profile } from '@screens/Profile';
-import { HomeRoutes } from './home.routes';
 
-type AppRoutes = {
-  homeTab: undefined;
-  classes: undefined;
-  profile: undefined;
-  history: undefined;
-};
+import { AppStackHomeRoutes } from './app.stackHome.routes';
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
+const { Navigator, Screen } = createBottomTabNavigator();
 
-export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
-
-export function AppRoutes() {
+export function AppTabRoutes() {
   const { sizes, colors } = useTheme();
 
   const iconSize = sizes[6];
 
   return (
     <Navigator
-      initialRouteName="homeTab"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -49,8 +41,8 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name="homeTab"
-        component={HomeRoutes}
+        name="Home"
+        component={AppStackHomeRoutes}
         options={{
           tabBarIcon: ({ color }) => (
             <HomeSvg fill={color} width={iconSize} height={iconSize} />

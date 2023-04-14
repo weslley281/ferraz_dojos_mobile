@@ -5,16 +5,7 @@ import {
 import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
 
-type AuthRoutes = {
-  signIn: undefined;
-  signUp: undefined;
-};
-
-//  export interface AuthNavigatorRoutesProps extends NativeStackNavigationProp<AuthRoutes> {}
-
-export type AuthNavigatorRoutesProps = NativeStackNavigationProp<AuthRoutes>;
-
-export const { Navigator, Screen } = createNativeStackNavigator<AuthRoutes>();
+export const { Navigator, Screen } = createNativeStackNavigator();
 
 export function AuthRoutes() {
   return (
