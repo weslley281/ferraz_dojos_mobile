@@ -30,8 +30,10 @@ export function SignIn() {
   }, []);
 
   async function login() {
+    console.log(email, password);
     try {
-      const response = await api.post('dojos/login', { email, password });
+      const response = await api.post('/dojos/login', { email, password });
+      console.log(api.post);
       const token = response.data.token;
       const id_dojo = response.data.id_dojo;
       console.log('o token do login foi ' + response.data.token);
