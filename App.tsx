@@ -12,7 +12,10 @@ import { THEME } from './src/theme';
 
 import { Loading } from '@components/Loading';
 
+import { AuthProvider, useAuth } from './src/hooks/auth';
+
 export default function App() {
+  const { userStorageLoading } = useAuth();
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
 
   return (
@@ -22,8 +25,9 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-
-      {fontsLoaded ? <Routes /> : <Loading />}
+      <AuthProvider>
+        {fontsLoaded && userStorageLoading ? <Routes /> : <Loading />}
+      </AuthProvider>
     </NativeBaseProvider>
   );
 }
