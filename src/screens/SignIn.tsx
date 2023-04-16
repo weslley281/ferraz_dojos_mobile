@@ -6,6 +6,7 @@ import {
   Heading,
   ScrollView,
   View,
+  HStack,
 } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -41,10 +42,6 @@ export function SignIn() {
     }
   }
 
-  function handleNewAccount() {
-    navigate('signUp');
-  }
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <VStack backgroundColor={'blueGray.500'} flex={1} px={10} pb={16}>
@@ -54,30 +51,33 @@ export function SignIn() {
             Treinar ajuda na evolução da sua mente.
           </Text>
         </Center>
-        <Center>
-          <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
-            Acesse a sua conta
-          </Heading>
+        {loading ? (
+          <Loading />
+        ) : (
+          <Center>
+            <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
+              Acesse a sua conta
+            </Heading>
 
-          <Input
-            placeholder="E-mail"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(text: string) => setEmail(text)}
-            value={email}
-          />
+            <Input
+              placeholder="E-mail"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(text: string) => setEmail(text)}
+              value={email}
+            />
 
-          <Input
-            placeholder="Senha"
-            secureTextEntry
-            autoCapitalize="none"
-            onChangeText={(text: string) => setPassword(text)}
-            value={password}
-          />
+            <Input
+              placeholder="Senha"
+              secureTextEntry
+              autoCapitalize="none"
+              onChangeText={(text: string) => setPassword(text)}
+              value={password}
+            />
 
-          <Button title="Acessar" onPress={login} />
-        </Center>
-
+            <Button title="Acessar" onPress={login} />
+          </Center>
+        )}
         <Center mt={24}>
           <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
             Ainda não tem acesso?
@@ -86,9 +86,8 @@ export function SignIn() {
           <Button
             title="Criar Conta"
             variant="outline"
-            onPress={handleNewAccount}
+            onPress={() => navigate('SignUp')}
           />
-          {loading ? <View /> : <Loading />}
         </Center>
       </VStack>
     </ScrollView>

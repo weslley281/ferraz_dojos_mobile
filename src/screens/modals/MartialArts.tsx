@@ -15,6 +15,8 @@ export function MartialArts({ handleCloseModal }: Props) {
   const { user } = useAuth();
   const [martial_art, setMartial_art] = useState('');
   const [description, setDescription] = useState('');
+  const [martial_arts, setMartial_arts] = useState<[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function martiaArtAlreadyExists(): Promise<boolean> {
     try {
@@ -77,41 +79,57 @@ export function MartialArts({ handleCloseModal }: Props) {
     }
   }
 
+  async function handleGetMartialArts() {
+    try {
+      setIsLoading(true);
+
+      const responses = await api.get(`martial_art/all/${user.id_dojo}`);
+
+      setMartial_arts(responses.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(`Erro ao buscar artes marciais: ${error}`);
+    }
+  }
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} width={350}>
-      <VStack backgroundColor={'blueGray.700'} flex={1}>
-        <HStack width={350} justifyContent={'flex-end'}>
-          <CustomButtonAntDesign
-            icon="closesquare"
-            onPress={handleCloseModal}
-          />
-        </HStack>
-        <Center px={5}>
-          <Heading
-            color="gray.100"
-            fontSize="xl"
-            mb={6}
-            mt={6}
-            fontFamily="heading"
-          >
-            Artes Marciais
-          </Heading>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <HStack backgroundColor={'blueGray.700'} flex={1}>
+        <VStack>
+          <HStack width={350} justifyContent={'flex-end'}>
+            <CustomButtonAntDesign
+              icon="closesquare"
+              onPress={handleCloseModal}
+            />
+          </HStack>
+          <Center px={5}>
+            <Heading
+              color="gray.100"
+              fontSize="xl"
+              mb={6}
+              mt={6}
+              fontFamily="heading"
+            >
+              Artes Marciais
+            </Heading>
 
-          <Input
-            placeholder="Nome"
-            onChangeText={(text: string) => setMartial_art(text)}
-            value={martial_art}
-          />
+            <Input
+              placeholder="Nome"
+              onChangeText={(text: string) => setMartial_art(text)}
+              value={martial_art}
+            />
 
-          <Input
-            placeholder="Description"
-            onChangeText={(text: string) => setDescription(text)}
-            value={description}
-          />
+            <Input
+              placeholder="Description"
+              onChangeText={(text: string) => setDescription(text)}
+              value={description}
+            />
 
-          <Button title="Save" onPress={handleRegisterMartialArt} />
-        </Center>
-      </VStack>
+            <Button title="Save" onPress={handleRegisterMartialArt} />
+          </Center>
+          <Center>{}</Center>
+        </VStack>
+      </HStack>
     </ScrollView>
   );
 }
