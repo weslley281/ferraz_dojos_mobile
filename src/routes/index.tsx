@@ -30,7 +30,6 @@ export function Routes() {
     <Box flex={1} bg="gray.700">
       <NavigationContainer theme={theme}>
         {user.id_dojo ? <AppTabRoutes /> : <AuthRoutes />}
-        {/* {logged ? <AppTabRoutes /> : <AuthRoutes />} */}
       </NavigationContainer>
     </Box>
   );

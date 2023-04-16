@@ -47,11 +47,11 @@ export function SignIn() {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <VStack background={'#808080'} flex={1} px={10} pb={16}>
+      <VStack backgroundColor={'blueGray.500'} flex={1} px={10} pb={16}>
         <Center my={24}>
           <LogoSvg />
           <Text color="gray.100" fontSize="sm">
-            Treine sua mente e o seu corpo.
+            Treinar ajuda na evolução da sua mente.
           </Text>
         </Center>
         <Center>

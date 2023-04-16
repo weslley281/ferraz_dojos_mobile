@@ -12,20 +12,26 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeHeader } from '@components/HomeHeader';
 import { CustomButtonAntDesign } from '@components/ButtonIconAntDesign';
 import { CustomButtonIonicons } from '@components/ButtonIconIonicons';
+import { CustomButtonSVG1 } from '@components/ButtonIconSVG1';
+import { CustomButtonSVG2 } from '@components/ButtonIconSVG2';
 
 export function Dashboard() {
   const { navigate } = useNavigation<any>();
 
   return (
-    <VStack flex={1}>
+    <VStack backgroundColor={'blueGray.700'} flex={1}>
       <HomeHeader />
 
       <VStack px={8}>
-        <HStack space={2} alignItems="center">
+        <HStack space={2} alignItems="center" mb={2}>
           <CustomButtonAntDesign icon="adduser" onPress={() => {}} />
           <CustomButtonAntDesign icon="addusergroup" onPress={() => {}} />
           <CustomButtonIonicons icon="school" onPress={() => {}} />
           <CustomButtonAntDesign icon="Trophy" onPress={() => {}} />
+        </HStack>
+        <HStack space={2} alignItems="center" mb={2}>
+          <CustomButtonSVG1 onPress={() => {}} />
+          <CustomButtonSVG2 onPress={() => {}} />
         </HStack>
         <Center>
           <Heading color={'gray.100'} mt={5} mb={5}>
