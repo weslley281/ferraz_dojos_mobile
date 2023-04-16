@@ -6,6 +6,7 @@ import {
   Heading,
   Text,
   View,
+  Modal,
 } from 'native-base';
 
 import { useNavigation } from '@react-navigation/native';
@@ -14,9 +15,20 @@ import { CustomButtonAntDesign } from '@components/ButtonIconAntDesign';
 import { CustomButtonIonicons } from '@components/ButtonIconIonicons';
 import { CustomButtonSVG1 } from '@components/ButtonIconSVG1';
 import { CustomButtonSVG2 } from '@components/ButtonIconSVG2';
+import { useState } from 'react';
+import { MartialArts } from './modals/MartialArts';
 
 export function Dashboard() {
   const { navigate } = useNavigation<any>();
+  const [martialArtModalOpen, setMartialArtModalOpen] = useState(false);
+
+  function handleOpenMartialArtModal() {
+    setMartialArtModalOpen(true);
+  }
+
+  function handleCloseMartialArtModal() {
+    setMartialArtModalOpen(false);
+  }
 
   return (
     <VStack backgroundColor={'blueGray.700'} flex={1}>
@@ -31,7 +43,7 @@ export function Dashboard() {
         </HStack>
         <HStack space={2} alignItems="center" mb={2}>
           <CustomButtonSVG1 onPress={() => {}} />
-          <CustomButtonSVG2 onPress={() => {}} />
+          <CustomButtonSVG2 onPress={handleOpenMartialArtModal} />
         </HStack>
         <Center>
           <Heading color={'gray.100'} mt={5} mb={5}>
@@ -48,6 +60,12 @@ export function Dashboard() {
             ativo
           </Text>
         </HStack>
+        <Modal
+          isOpen={martialArtModalOpen}
+          onClose={handleCloseMartialArtModal}
+        >
+          <MartialArts handleCloseModal={handleCloseMartialArtModal} />
+        </Modal>
       </VStack>
     </VStack>
   );
