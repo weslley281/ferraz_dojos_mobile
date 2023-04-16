@@ -26,7 +26,7 @@ export default function App() {
         translucent
       />
       <AuthProvider>
-        {fontsLoaded && userStorageLoading ? <Routes /> : <Loading />}
+        {fontsLoaded || userStorageLoading ? <Routes /> : <Loading />}
       </AuthProvider>
     </NativeBaseProvider>
   );

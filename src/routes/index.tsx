@@ -5,8 +5,10 @@ import { AuthRoutes } from './auth.routes';
 import { AppTabRoutes } from './app.tab.routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@hooks/auth';
 
 export function Routes() {
+  const { user } = useAuth();
   const { colors } = useTheme();
   const [logged, setLogged] = useState(false);
 
@@ -27,7 +29,8 @@ export function Routes() {
   return (
     <Box flex={1} bg="gray.700">
       <NavigationContainer theme={theme}>
-        {logged ? <AppTabRoutes /> : <AuthRoutes />}
+        {user.id_dojo ? <AppTabRoutes /> : <AuthRoutes />}
+        {/* {logged ? <AppTabRoutes /> : <AuthRoutes />} */}
       </NavigationContainer>
     </Box>
   );

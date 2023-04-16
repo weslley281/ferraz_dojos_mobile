@@ -1,4 +1,12 @@
-import { VStack, Image, Text, Center, Heading, ScrollView } from 'native-base';
+import {
+  VStack,
+  Image,
+  Text,
+  Center,
+  Heading,
+  ScrollView,
+  View,
+} from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LogoSvg from '@assets/logo.svg';
@@ -11,46 +19,25 @@ import { useNavigation } from '@react-navigation/native';
 import { api } from '@services/api';
 import { Alert } from 'react-native';
 import { useEffect, useState } from 'react';
+import { Loading } from '@components/Loading';
+import { useAuth } from '@hooks/auth';
 
 export function SignIn() {
   const { navigate } = useNavigation<any>();
+  const { signIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  async function checkToken() {
-    const token = await AsyncStorage.getItem('@tokenFerraz');
-    console.log('Se esta autenticado = ' + token);
-    if (token) {
-      navigate('Home');
-    }
-  }
-  useEffect(() => {
-    checkToken();
-  }, []);
+  const [loading, setIsLoading] = useState(false);
 
   async function login() {
-    console.log(email, password);
     try {
-      const response = await api.post('/dojos/login', { email, password });
-      console.log(api.post);
-      const token = response.data.token;
-      const id_dojo = response.data.id_dojo;
-      console.log('o token do login foi ' + response.data.token);
-      console.log('o id veio como ' + response.data.id_dojo);
-
-      await AsyncStorage.removeItem('@tokenFerraz');
-      await AsyncStorage.removeItem('@id_dojo');
-
-      await AsyncStorage.setItem('@tokenFerraz', token);
-      await AsyncStorage.setItem('@id_dojo', id_dojo);
-      return navigate('Home');
+      setIsLoading(true);
+      return await signIn(email, password);
     } catch (error) {
-      Alert.alert(
-        'Aviso',
-        `Não foi possível fazer o Login, verifique o email e a senha: ${error}`
-      );
-      console.error(`Não foi possível fazer o Login error ${error}`);
+      console.log('Não foi possível conectar a conta: ' + error);
+      Alert.alert('Não foi possível conectar a conta: ' + error);
+      setIsLoading(false);
     }
   }
 
@@ -101,6 +88,7 @@ export function SignIn() {
             variant="outline"
             onPress={handleNewAccount}
           />
+          {loading ? <View /> : <Loading />}
         </Center>
       </VStack>
     </ScrollView>
