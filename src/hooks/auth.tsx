@@ -26,6 +26,7 @@ interface User {
   password: string;
   createdAt: string;
   updatedAt: string;
+  token: string;
 }
 
 interface IAuthContextData {
@@ -45,24 +46,29 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn(email: string, password: string) {
     try {
-      const response = await api.post('/dojos/login', { email, password });
+      const responseLogin = await api.post('/dojos/login', { email, password });
+      const responseGet = await api.get(
+        `/dojos/id/${responseLogin.data.id_dojo}`
+      );
 
       const userLogged = {
-        id_dojo: response.data.id_dojo,
-        dojo: response.data.dojo,
-        phone: response.data.phone,
-        email: response.data.email,
-        address_line1: response.data.address_line1,
-        address_line2: response.data.address_line2,
-        city: response.data.city,
-        state: response.data.state,
-        country: response.data.country,
-        password: response.data.password,
-        createdAt: response.data.createdAt,
-        updatedAt: response.data.updatedAt,
+        id_dojo: responseLogin.data.id_dojo,
+        dojo: responseGet.data.dojo,
+        phone: responseGet.data.phone,
+        email: responseGet.data.email,
+        address_line1: responseGet.data.address_line1,
+        address_line2: responseGet.data.address_line2,
+        city: responseGet.data.city,
+        state: responseGet.data.state,
+        country: responseGet.data.country,
+        password: responseGet.data.password,
+        createdAt: responseGet.data.createdAt,
+        updatedAt: responseGet.data.updatedAt,
+        token: responseLogin.data.token,
       };
 
       setUser(userLogged);
+      console.log(userLogged);
       await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
     } catch (error) {
       throw new Error(String(error));

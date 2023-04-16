@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
-import { AntDesign } from '@expo/vector-icons';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type CustomButtonProps = {
   onPress: () => void;
@@ -8,7 +9,7 @@ type CustomButtonProps = {
   icon: string;
 };
 
-export const CustomButton: React.FC<CustomButtonProps> = ({
+export const CustomButtonAntDesign: React.FC<CustomButtonProps> = ({
   onPress,
   disabled,
   icon,

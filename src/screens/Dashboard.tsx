@@ -10,7 +10,8 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 import { HomeHeader } from '@components/HomeHeader';
-import { CustomButton } from '@components/ButtonIcon';
+import { CustomButtonAntDesign } from '@components/ButtonIconAntDesign';
+import { CustomButtonIonicons } from '@components/ButtonIconIonicons';
 
 export function Dashboard() {
   const { navigate } = useNavigation<any>();
@@ -20,17 +21,18 @@ export function Dashboard() {
       <HomeHeader />
 
       <VStack px={8}>
+        <HStack space={2} alignItems="center">
+          <CustomButtonAntDesign icon="adduser" onPress={() => {}} />
+          <CustomButtonAntDesign icon="addusergroup" onPress={() => {}} />
+          <CustomButtonIonicons icon="school" onPress={() => {}} />
+          <CustomButtonAntDesign icon="Trophy" onPress={() => {}} />
+        </HStack>
         <Center>
           <Heading color={'gray.100'} mt={5} mb={5}>
             Alunos
           </Heading>
         </Center>
-        <HStack space={2} alignItems="center">
-          <CustomButton icon="adduser" onPress={() => {}} />
-          <CustomButton icon="addusergroup" onPress={() => {}} />
-          <CustomButton icon="Trophy" onPress={() => {}} />
-          <CustomButton icon="md-school" onPress={() => {}} />
-        </HStack>
+
         <HStack justifyContent="space-between" mb={5}>
           <Heading color="gray.200" fontSize="md" fontFamily="heading">
             Fulano
