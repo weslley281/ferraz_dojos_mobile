@@ -1,10 +1,12 @@
 import { Button } from '@components/Button';
 import { CustomButtonAntDesign } from '@components/ButtonIconAntDesign';
+import { ContainerMartialItem } from '@components/ContainerMartialItem';
 import { Input } from '@components/Input';
+import { Loading } from '@components/Loading';
 import { useAuth } from '@hooks/auth';
 import { api } from '@services/api';
 import { Center, HStack, Heading, ScrollView, VStack } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 interface Props {
@@ -79,11 +81,20 @@ export function MartialArts({ handleCloseModal }: Props) {
     }
   }
 
-  async function handleGetMartialArts() {
+  function onEdite(name: string, description: string) {
+    setMartial_art(name);
+    setDescription(description);
+  }
+
+  async function getMartialArts() {
     try {
       setIsLoading(true);
 
       const responses = await api.get(`martial_art/all/${user.id_dojo}`);
+      console.log(
+        'As artes marciais sao2: ' + responses.data.martial_art,
+        user.id_dojo
+      );
 
       setMartial_arts(responses.data);
       setIsLoading(false);
@@ -91,6 +102,11 @@ export function MartialArts({ handleCloseModal }: Props) {
       console.log(`Erro ao buscar artes marciais: ${error}`);
     }
   }
+
+  useEffect(() => {
+    getMartialArts();
+    console.log('As artes marciais sao: ' + martial_arts);
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -127,7 +143,19 @@ export function MartialArts({ handleCloseModal }: Props) {
 
             <Button title="Save" onPress={handleRegisterMartialArt} />
           </Center>
-          <Center>{}</Center>
+
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Center>
+              {martial_arts.map((item: any) => {
+                <ContainerMartialItem
+                  data={item}
+                  onPress={() => onEdite(item.martial_art, item.description)}
+                />;
+              })}
+            </Center>
+          )}
         </VStack>
       </HStack>
     </ScrollView>
