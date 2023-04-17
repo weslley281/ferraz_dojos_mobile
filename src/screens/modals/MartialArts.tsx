@@ -5,7 +5,14 @@ import { Input } from '@components/Input';
 import { Loading } from '@components/Loading';
 import { useAuth } from '@hooks/auth';
 import { api } from '@services/api';
-import { Center, HStack, Heading, ScrollView, VStack } from 'native-base';
+import {
+  Center,
+  HStack,
+  Heading,
+  ScrollView,
+  VStack,
+  TextArea,
+} from 'native-base';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
@@ -17,7 +24,7 @@ export function MartialArts({ handleCloseModal }: Props) {
   const { user } = useAuth();
   const [martial_art, setMartial_art] = useState('');
   const [description, setDescription] = useState('');
-  const [martial_arts, setMartial_arts] = useState<[]>([]);
+  const [martial_arts, setMartial_arts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   async function martiaArtAlreadyExists(): Promise<boolean> {
@@ -58,6 +65,8 @@ export function MartialArts({ handleCloseModal }: Props) {
         if (response) {
           Alert.alert('Aviso', 'Arte Marcial editada com sucesso');
         }
+
+        getMartialArts();
         return response;
       } else {
         const obj = {
@@ -73,6 +82,8 @@ export function MartialArts({ handleCloseModal }: Props) {
         if (response) {
           Alert.alert('Aviso', 'Arte Marcial criado com sucesso');
         }
+
+        getMartialArts();
         return response;
       }
     } catch (error: any) {
@@ -89,14 +100,9 @@ export function MartialArts({ handleCloseModal }: Props) {
   async function getMartialArts() {
     try {
       setIsLoading(true);
-
-      const responses = await api.get(`martial_art/all/${user.id_dojo}`);
-      console.log(
-        'As artes marciais sao2: ' + responses.data.martial_art,
-        user.id_dojo
-      );
-
-      setMartial_arts(responses.data);
+      const response = await api.get(`martial_art/all/${user.id_dojo}`);
+      console.log('Type of response:', typeof response.data); // adicionado
+      setMartial_arts(response.data);
       setIsLoading(false);
     } catch (error) {
       console.log(`Erro ao buscar artes marciais: ${error}`);
@@ -105,7 +111,6 @@ export function MartialArts({ handleCloseModal }: Props) {
 
   useEffect(() => {
     getMartialArts();
-    console.log('As artes marciais sao: ' + martial_arts);
   }, []);
 
   return (
@@ -135,10 +140,18 @@ export function MartialArts({ handleCloseModal }: Props) {
               value={martial_art}
             />
 
-            <Input
+            <TextArea
+              bg="gray.700"
+              px={4}
+              borderWidth={0}
+              fontSize="md"
+              color="white"
+              fontFamily="body"
+              mb={4}
               placeholder="Description"
               onChangeText={(text: string) => setDescription(text)}
               value={description}
+              autoCompleteType={Alert}
             />
 
             <Button title="Save" onPress={handleRegisterMartialArt} />
@@ -149,10 +162,13 @@ export function MartialArts({ handleCloseModal }: Props) {
           ) : (
             <Center>
               {martial_arts.map((item: any) => {
-                <ContainerMartialItem
-                  data={item}
-                  onPress={() => onEdite(item.martial_art, item.description)}
-                />;
+                return (
+                  <ContainerMartialItem
+                    key={item.id_martial_art}
+                    data={item}
+                    onPress={() => onEdite(item.martial_art, item.description)}
+                  />
+                );
               })}
             </Center>
           )}
