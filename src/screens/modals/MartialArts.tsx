@@ -22,6 +22,7 @@ interface Props {
 
 export function MartialArts({ handleCloseModal }: Props) {
   const { user } = useAuth();
+  const [idMartial_art, setIdMartial_art] = useState('');
   const [martial_art, setMartial_art] = useState('');
   const [description, setDescription] = useState('');
   const [martial_arts, setMartial_arts] = useState<any[]>([]);
@@ -52,7 +53,22 @@ export function MartialArts({ handleCloseModal }: Props) {
     try {
       const id_martial_art = await martiaArtAlreadyExists();
 
-      if (id_martial_art) {
+      if (idMartial_art !== '') {
+        const obj = {
+          id_martial_art: idMartial_art,
+          martial_art,
+          description,
+          id_dojo: user.id_dojo,
+        };
+
+        const response = await api.put(`martial_art/create`, obj);
+
+        if (response) {
+          Alert.alert('Aviso', 'Arte Marcial editada com sucesso');
+        }
+        getMartialArts();
+        return response;
+      } else if (id_martial_art) {
         const obj = {
           id_martial_art,
           martial_art,
@@ -166,7 +182,10 @@ export function MartialArts({ handleCloseModal }: Props) {
                   <ContainerMartialItem
                     key={item.id_martial_art}
                     data={item}
-                    onPress={() => onEdite(item.martial_art, item.description)}
+                    onPress={() => {
+                      onEdite(item.martial_art, item.description);
+                      setIdMartial_art(item.id_martial_art);
+                    }}
                   />
                 );
               })}
